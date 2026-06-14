@@ -344,7 +344,7 @@ article p,
 
 .service-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1px;
   border: 1px solid var(--line);
   background: var(--line);
@@ -368,6 +368,24 @@ article {
   color: var(--gold);
   font-size: 0.8rem;
   font-weight: 900;
+}
+
+.outcomes-section {
+  background: var(--warm);
+  border-block: 1px solid var(--line);
+}
+
+.outcome-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.outcome-grid article {
+  min-height: 284px;
+  background: var(--paper);
 }
 
 .lens-section {
@@ -475,6 +493,37 @@ article {
 
 .method-item p {
   margin-bottom: 0;
+}
+
+.bench-section {
+  background: var(--paper);
+}
+
+.bench-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.bench-grid article {
+  min-height: 292px;
+  background: var(--white);
+}
+
+.bench-grid span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 34px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--red);
+  font-size: 0.78rem;
+  font-weight: 950;
 }
 
 .leadership-section {
@@ -756,6 +805,8 @@ footer {
   }
 
   .service-grid,
+  .outcome-grid,
+  .bench-grid,
   .lens-grid,
   .signal-band {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -819,6 +870,8 @@ footer {
   }
 
   .service-grid,
+  .outcome-grid,
+  .bench-grid,
   .lens-grid,
   .signal-band {
     grid-template-columns: 1fr;
