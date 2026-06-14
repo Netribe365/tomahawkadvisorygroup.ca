@@ -39,7 +39,7 @@
           </p>
           <p class="hero-note">Led by CEO Marc Smith, with 50 years of advisory experience.</p>
           <div class="hero-actions">
-            <a class="button primary" href="mailto:info@tomahawkadvisorygroup.ca">Start a conversation</a>
+            <a class="button primary" href="#contact-form">Start a conversation</a>
             <a class="button secondary" href="#leadership">Meet leadership</a>
           </div>
         </div>
@@ -240,19 +240,103 @@
       </section>
 
       <section id="contact" class="contact">
-        <div>
+        <div class="contact-intro">
           <p class="eyebrow">Contact</p>
           <h2>Bring shape to the next decision.</h2>
           <p>
-            For advisory inquiries, procurement support, project planning, or
-            executive coordination, reach TAG through the company inbox or
-            Marc’s executive contact.
+            Tell TAG what kind of support you are looking for. Public inquiries
+            route through the company inbox so the next step can be reviewed
+            and coordinated properly.
           </p>
+          <div class="direct-contacts" aria-label="Direct contact emails">
+            <a href="mailto:info@tomahawkadvisorygroup.ca">info@tomahawkadvisorygroup.ca</a>
+            <a href="mailto:marc@tomahawkadvisorygroup.ca">marc@tomahawkadvisorygroup.ca</a>
+          </div>
         </div>
-        <div class="contact-actions">
-          <a class="button primary" href="mailto:info@tomahawkadvisorygroup.ca">info@tomahawkadvisorygroup.ca</a>
-          <a class="button secondary" href="mailto:marc@tomahawkadvisorygroup.ca">marc@tomahawkadvisorygroup.ca</a>
-        </div>
+
+        <form
+          id="contact-form"
+          class="contact-form"
+          action="mailto:info@tomahawkadvisorygroup.ca"
+          method="post"
+          enctype="text/plain"
+          data-inquiry-form
+        >
+          <div class="form-grid">
+            <label>
+              <span>Full name</span>
+              <input name="name" type="text" autocomplete="name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <label>
+              <span>Organization</span>
+              <input name="organization" type="text" autocomplete="organization" />
+            </label>
+            <label>
+              <span>Phone</span>
+              <input name="phone" type="tel" autocomplete="tel" />
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Services interested in</legend>
+            <div class="service-options">
+              <label>
+                <input type="checkbox" name="services" value="Economic development" />
+                <span>Economic development</span>
+              </label>
+              <label>
+                <input type="checkbox" name="services" value="Procurement readiness" />
+                <span>Procurement readiness</span>
+              </label>
+              <label>
+                <input type="checkbox" name="services" value="Project planning" />
+                <span>Project planning</span>
+              </label>
+              <label>
+                <input type="checkbox" name="services" value="Execution support" />
+                <span>Execution support</span>
+              </label>
+              <label>
+                <input type="checkbox" name="services" value="Indigenous advisory lens" />
+                <span>Indigenous advisory lens</span>
+              </label>
+              <label>
+                <input type="checkbox" name="services" value="Other" />
+                <span>Other</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <label class="full-field">
+            <span>What are you looking for?</span>
+            <textarea
+              name="message"
+              rows="6"
+              required
+            ></textarea>
+          </label>
+
+          <label class="full-field">
+            <span>Timeline</span>
+            <select name="timeline">
+              <option value="Not specified">Not specified</option>
+              <option value="Immediate">Immediate</option>
+              <option value="30 to 60 days">30 to 60 days</option>
+              <option value="This quarter">This quarter</option>
+              <option value="Planning ahead">Planning ahead</option>
+            </select>
+          </label>
+
+          <div class="form-actions">
+            <button class="button primary" type="submit">Send inquiry</button>
+            <a class="button secondary" href="mailto:info@tomahawkadvisorygroup.ca">Email info directly</a>
+          </div>
+          <p class="form-status" data-form-status aria-live="polite"></p>
+        </form>
       </section>
     </main>
 
@@ -260,5 +344,71 @@
       <span>Tomahawk Advisory Group</span>
       <span>Strategic advisory and execution support</span>
     </footer>
+    <script>
+      function collectInquiryData(form) {
+        const getValue = (selector) =>
+          String(form.querySelector(selector)?.value || "").trim();
+
+        return {
+          name: getValue('[name="name"]'),
+          email: getValue('[name="email"]'),
+          organization: getValue('[name="organization"]'),
+          phone: getValue('[name="phone"]'),
+          timeline: getValue('[name="timeline"]') || "Not specified",
+          message: getValue('[name="message"]'),
+          services: Array.from(form.querySelectorAll('[name="services"]:checked')).map(
+            (input) => input.value,
+          ),
+        };
+      }
+
+      function buildInquiryMailto(inquiry) {
+        const services = inquiry.services || [];
+        const name = inquiry.name;
+        const organization = inquiry.organization;
+        const subjectName = name || organization || "TAG website";
+        const subject = `Website inquiry from ${subjectName}`;
+        const bodyLines = [
+          "New website inquiry for Tomahawk Advisory Group",
+          "",
+          `Name: ${name}`,
+          `Email: ${inquiry.email}`,
+          `Organization: ${organization || "Not provided"}`,
+          `Phone: ${inquiry.phone || "Not provided"}`,
+          `Services: ${services.length ? services.join(", ") : "Not specified"}`,
+          `Timeline: ${inquiry.timeline}`,
+          "",
+          "Message:",
+          inquiry.message,
+        ];
+
+        return [
+          "mailto:info@tomahawkadvisorygroup.ca",
+          `?subject=${encodeURIComponent(subject)}`,
+          `&body=${encodeURIComponent(bodyLines.join("\n"))}`,
+        ].join("");
+      }
+
+      const inquiryForm = document.querySelector("[data-inquiry-form]");
+
+      inquiryForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        if (!inquiryForm.checkValidity()) {
+          inquiryForm.reportValidity();
+          return;
+        }
+
+        const inquiry = collectInquiryData(inquiryForm);
+        const mailto = buildInquiryMailto(inquiry);
+        const status = inquiryForm.querySelector("[data-form-status]");
+
+        if (status) {
+          status.textContent = "Your email app should open with the inquiry addressed to TAG.";
+        }
+
+        window.location.href = mailto;
+      });
+    </script>
   </body>
 </html>
