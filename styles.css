@@ -419,12 +419,16 @@ article {
   background: var(--white);
 }
 
+.leadership-cards {
+  display: grid;
+  gap: 18px;
+}
+
 .leadership-card {
   display: grid;
   grid-template-columns: 132px minmax(0, 1fr);
   gap: 28px;
   align-items: start;
-  min-height: 360px;
   padding: 34px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -453,11 +457,16 @@ article {
   font-weight: 900;
 }
 
-.leadership-card p:last-child {
+.leadership-card .leader-bio {
   max-width: 620px;
+  margin-bottom: 14px;
   color: var(--muted);
   font-size: 1.08rem;
   line-height: 1.68;
+}
+
+.leadership-card .leader-bio:last-child {
+  margin-bottom: 0;
 }
 
 .leadership-copy {
