@@ -447,6 +447,11 @@ article {
   font-weight: 950;
 }
 
+.leader-mark-single {
+  font-size: 4.25rem;
+  line-height: 1;
+}
+
 .leadership-card h2 {
   margin-bottom: 8px;
 }
@@ -759,6 +764,10 @@ footer {
     width: 104px;
     height: 104px;
     font-size: 1.5rem;
+  }
+
+  .leader-mark-single {
+    font-size: 3.4rem;
   }
 
   .button {
